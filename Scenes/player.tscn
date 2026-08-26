@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://cqsc40ewro3"]
+
+[ext_resource type="Script" uid="uid://74ax3qiumwmg" path="res://Scripts/player.gd" id="1_v0iea"]
+[ext_resource type="Texture2D" uid="uid://dmokb3woed614" path="res://icon.svg" id="2_cvnsp"]
+[ext_resource type="Script" uid="uid://pqny7uv5dfh" path="res://Scripts/camera.gd" id="4_vgqql"]
+[ext_resource type="PackedScene" uid="uid://71tudr8b66ws" path="res://Scenes/tank_shell.tscn" id="5_fkybt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b7kvq"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_b7kvq"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_s4ilt"]
+
+[node name="Player" type="CharacterBody2D" unique_id=1501874275]
+collision_layer = 2
+collision_mask = 13
+motion_mode = 1
+slide_on_ceiling = false
+script = ExtResource("1_v0iea")
+projectile_scene = ExtResource("5_fkybt")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=460865179]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_cvnsp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1176075452]
+shape = SubResource("RectangleShape2D_b7kvq")
+
+[node name="Turret" type="Node2D" parent="." unique_id=1618220654]
+
+[node name="ShootPoint" type="Node2D" parent="Turret" unique_id=1748609694]
+position = Vector2(0, -52)
+
+[node name="TurretBody" type="MeshInstance2D" parent="Turret" unique_id=1858309091]
+scale = Vector2(40, 40)
+mesh = SubResource("BoxMesh_b7kvq")
+
+[node name="Cannon" type="MeshInstance2D" parent="Turret" unique_id=2091136024]
+position = Vector2(0, -26.000002)
+scale = Vector2(13.634, 38)
+mesh = SubResource("BoxMesh_s4ilt")
+
+[node name="ReloadTimer" type="Timer" parent="Turret" unique_id=1935948579]
+one_shot = true
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=2119540210]
+script = ExtResource("4_vgqql")
+maxZoomIn = 2.0
+maxZoomOut = 0.1

@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://dlaeox1m5dk1y"]
+
+[ext_resource type="Script" uid="uid://bk81e5gexjn0b" path="res://Scripts/ally_tank.gd" id="1_7mhi4"]
+[ext_resource type="PackedScene" uid="uid://71tudr8b66ws" path="res://Scenes/tank_shell.tscn" id="2_1tjvu"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_gywp8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mkcvk"]
+size = Vector2(79, 77)
+
+[sub_resource type="BoxMesh" id="BoxMesh_mkcvk"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_b7kvq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mkcvk"]
+radius = 681.0029
+
+[node name="ally_tank" type="CharacterBody2D" unique_id=146967235]
+collision_layer = 16
+collision_mask = 14
+script = ExtResource("1_7mhi4")
+projectile_scene = ExtResource("2_1tjvu")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="." unique_id=1134022625]
+modulate = Color(0.52906674, 0.5290667, 0.5290667, 1)
+scale = Vector2(84, 84)
+mesh = SubResource("BoxMesh_gywp8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1915625968]
+shape = SubResource("RectangleShape2D_mkcvk")
+
+[node name="Turret" type="Node2D" parent="." unique_id=1729049147]
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Turret" unique_id=704460068]
+modulate = Color(0.66304004, 0.66304, 0.66304, 1)
+scale = Vector2(58.5, 58.5)
+mesh = SubResource("BoxMesh_mkcvk")
+
+[node name="MeshInstance2D2" type="MeshInstance2D" parent="Turret" unique_id=1753850727]
+modulate = Color(0.77989566, 0.7798957, 0.77989566, 1)
+position = Vector2(0, -35)
+scale = Vector2(14.000001, 53.75)
+mesh = SubResource("BoxMesh_b7kvq")
+
+[node name="ShootPoint" type="Node2D" parent="Turret" unique_id=896436670]
+position = Vector2(0, -72)
+
+[node name="ReloadTimer" type="Timer" parent="Turret" unique_id=1653294029]
+one_shot = true
+
+[node name="DetectionArea" type="Area2D" parent="." unique_id=1084685464]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea" unique_id=616575239]
+shape = SubResource("CircleShape2D_mkcvk")
+
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]

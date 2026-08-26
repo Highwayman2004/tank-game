@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://71tudr8b66ws"]
+
+[ext_resource type="Script" uid="uid://bqce7j78musoj" path="res://Scripts/tank_shell.gd" id="1_7ju5k"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_mkcvk"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gywp8"]
+radius = 6.0
+height = 24.0
+
+[node name="tank_shell" type="Area2D" unique_id=508692850]
+collision_layer = 8
+collision_mask = 22
+script = ExtResource("1_7ju5k")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="." unique_id=1951938918]
+position = Vector2(2.3841858e-07, 0)
+scale = Vector2(12.75, 12.75)
+mesh = SubResource("CapsuleMesh_mkcvk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1938823534]
+shape = SubResource("CapsuleShape2D_gywp8")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=298231112]
+rect = Rect2(-6, -12, 12, 24)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

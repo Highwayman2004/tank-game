@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://dly33hd221hm7"]
+
+[ext_resource type="PackedScene" uid="uid://cqsc40ewro3" path="res://Scenes/player.tscn" id="1_jjgbg"]
+[ext_resource type="Script" uid="uid://pqny7uv5dfh" path="res://Scripts/camera.gd" id="2_bo1nx"]
+[ext_resource type="PackedScene" uid="uid://dp1oie7ymyuw5" path="res://Scenes/enemy_tank.tscn" id="3_8gbba"]
+[ext_resource type="PackedScene" uid="uid://dlaeox1m5dk1y" path="res://Scenes/ally_tank.tscn" id="4_jjvhh"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_gywp8"]
+
+[node name="Main" type="Node" unique_id=1206725119]
+
+[node name="BoundrySouth" type="StaticBody2D" parent="." unique_id=739525925]
+position = Vector2(0, 846)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BoundrySouth" unique_id=1186447942]
+shape = SubResource("WorldBoundaryShape2D_gywp8")
+
+[node name="Player" parent="." unique_id=1501874275 groups=["player"] instance=ExtResource("1_jjgbg")]
+process_mode = 4
+collision_mask = 61
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=1917279808]
+script = ExtResource("2_bo1nx")
+
+[node name="EnemyTank" parent="." unique_id=556807930 groups=["enemies"] instance=ExtResource("3_8gbba")]
+position = Vector2(236, -158)
+
+[node name="ally_tank" parent="." unique_id=146967235 groups=["allies"] instance=ExtResource("4_jjvhh")]
+position = Vector2(-276, 113)

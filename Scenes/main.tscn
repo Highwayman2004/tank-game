@@ -1,0 +1,81 @@
+[gd_scene format=3 uid="uid://dly33hd221hm7"]
+
+[ext_resource type="PackedScene" uid="uid://cqsc40ewro3" path="res://Scenes/player.tscn" id="1_jjgbg"]
+[ext_resource type="PackedScene" uid="uid://dp1oie7ymyuw5" path="res://Scenes/enemy_tank.tscn" id="3_8gbba"]
+[ext_resource type="PackedScene" uid="uid://dlaeox1m5dk1y" path="res://Scenes/ally_tank.tscn" id="4_jjvhh"]
+[ext_resource type="Script" uid="uid://bespwvcwwsfxw" path="res://Scripts/spawn_manager.gd" id="5_kry3j"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_gywp8"]
+
+[sub_resource type="Curve2D" id="Curve2D_jjvhh"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -1476, 766, 0, 0, 0, 0, 0, 793, 0, 0, 0, 0, 1603, 786, 0, 0, 0, 0, -1476, 766)
+}
+point_count = 4
+
+[sub_resource type="Curve2D" id="Curve2D_kry3j"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -1542, -1315, 0, 0, 0, 0, -7, -1376, 0, 0, 0, 0, 1593, -1348, 0, 0, 0, 0, -1542, -1315)
+}
+point_count = 4
+
+[node name="Main" type="Node" unique_id=1206725119]
+
+[node name="BoundrySouth" type="StaticBody2D" parent="." unique_id=739525925]
+position = Vector2(0, 846)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BoundrySouth" unique_id=1186447942]
+shape = SubResource("WorldBoundaryShape2D_gywp8")
+
+[node name="Player" parent="." unique_id=1501874275 instance=ExtResource("1_jjgbg")]
+
+[node name="EnemyTank" parent="." unique_id=556807930 groups=["enemies"] instance=ExtResource("3_8gbba")]
+process_mode = 4
+visible = false
+position = Vector2(236, -158)
+
+[node name="ally_tank" parent="." unique_id=146967235 groups=["allies"] instance=ExtResource("4_jjvhh")]
+process_mode = 4
+visible = false
+position = Vector2(-276, 113)
+
+[node name="AllySpawnPath" type="Path2D" parent="." unique_id=1522359307]
+curve = SubResource("Curve2D_jjvhh")
+
+[node name="AllySpawnLocation" type="PathFollow2D" parent="AllySpawnPath" unique_id=438626955]
+position = Vector2(-1476, 766)
+rotation = 0.018290645
+
+[node name="EnemySpawnPath" type="Path2D" parent="." unique_id=712070868]
+curve = SubResource("Curve2D_kry3j")
+
+[node name="EnemySpawnLocation" type="PathFollow2D" parent="EnemySpawnPath" unique_id=1100257818]
+position = Vector2(-1542, -1315)
+rotation = -0.03971852
+
+[node name="PlayerSpawnPosition" type="Marker2D" parent="." unique_id=56976377]
+position = Vector2(0, 416)
+
+[node name="SpawnManager" type="Node2D" parent="." unique_id=842575840 node_paths=PackedStringArray("player", "player_spawn_position", "ally_spawn", "ally_spawn_timer", "enemy_spawn", "enemy_spawn_timer")]
+script = ExtResource("5_kry3j")
+player = NodePath("../Player")
+player_spawn_position = NodePath("../PlayerSpawnPosition")
+ally_scene = ExtResource("4_jjvhh")
+ally_spawn = NodePath("../AllySpawnPath/AllySpawnLocation")
+ally_spawn_timer = NodePath("../AllySpawnTimer")
+enemy_scene = ExtResource("3_8gbba")
+enemy_spawn = NodePath("../EnemySpawnPath/EnemySpawnLocation")
+enemy_spawn_timer = NodePath("../EnemySpawnTimer")
+
+[node name="StartTimer" type="Timer" parent="." unique_id=255079210]
+one_shot = true
+autostart = true
+
+[node name="AllySpawnTimer" type="Timer" parent="." unique_id=764688157]
+
+[node name="EnemySpawnTimer" type="Timer" parent="." unique_id=162600275]
+wait_time = 2.0
+
+[connection signal="timeout" from="StartTimer" to="SpawnManager" method="_on_start_timer_timeout"]
+[connection signal="timeout" from="AllySpawnTimer" to="SpawnManager" method="_on_ally_spawn_timer_timeout"]
+[connection signal="timeout" from="EnemySpawnTimer" to="SpawnManager" method="_on_enemy_spawn_timer_timeout"]

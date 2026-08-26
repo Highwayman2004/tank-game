@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://dp1oie7ymyuw5"]
+
+[ext_resource type="Script" uid="uid://dlrj0tirfhfed" path="res://Scripts/enemy_tank.gd" id="1_ohh37"]
+[ext_resource type="PackedScene" uid="uid://71tudr8b66ws" path="res://Scenes/tank_shell.tscn" id="2_44s6k"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mkcvk"]
+size = Vector2(89, 84)
+
+[sub_resource type="BoxMesh" id="BoxMesh_mkcvk"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mkcvk"]
+radius = 581.48944
+
+[node name="EnemyTank" type="CharacterBody2D" unique_id=532783157]
+collision_layer = 4
+collision_mask = 10
+script = ExtResource("1_ohh37")
+projectile_scene = ExtResource("2_44s6k")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=438282976]
+position = Vector2(-0.5, 1)
+shape = SubResource("RectangleShape2D_mkcvk")
+
+[node name="Body" type="MeshInstance2D" parent="." unique_id=306066538]
+modulate = Color(2.6471912e-06, 0.83405185, 0.11381564, 1)
+scale = Vector2(98.92081, 98.92081)
+mesh = SubResource("BoxMesh_mkcvk")
+
+[node name="Turret" type="Node2D" parent="." unique_id=1314107729]
+
+[node name="Canon" type="MeshInstance2D" parent="Turret" unique_id=760960317]
+modulate = Color(0.063599125, 0.28741863, 2.4065375e-07, 1)
+position = Vector2(0, -43.999996)
+scale = Vector2(24.730202, 65.947205)
+mesh = SubResource("BoxMesh_mkcvk")
+
+[node name="TurretBody" type="MeshInstance2D" parent="Turret" unique_id=156125436]
+modulate = Color(0, 0.5750346, 0.10816603, 1)
+position = Vector2(-2.9802322e-08, -2.9802322e-08)
+scale = Vector2(58.286087, 58.286087)
+mesh = SubResource("BoxMesh_mkcvk")
+
+[node name="ShootPoint" type="Node2D" parent="Turret" unique_id=864020172]
+position = Vector2(0, -88)
+
+[node name="ReloadTimer" type="Timer" parent="Turret" unique_id=734254075]
+wait_time = 2.0
+one_shot = true
+
+[node name="DetectionRay" type="RayCast2D" parent="Turret" unique_id=738917660]
+
+[node name="DetectionArea" type="Area2D" parent="." unique_id=1948649122]
+collision_layer = 0
+collision_mask = 18
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea" unique_id=58878783]
+shape = SubResource("CircleShape2D_mkcvk")
+
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
